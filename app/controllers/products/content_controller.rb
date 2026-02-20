@@ -6,8 +6,6 @@ class Products::ContentController < Products::BaseController
   end
 
   def update
-    authorize @product
-
     should_publish = params[:publish].present? && !@product.published?
     should_unpublish = params[:unpublish].present? && @product.published?
 

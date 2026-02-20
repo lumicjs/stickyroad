@@ -8,8 +8,6 @@ class Products::ShareController < Products::BaseController
   end
 
   def update
-    authorize @product
-
     should_unpublish = params[:unpublish].present? && @product.published?
 
     if should_unpublish
