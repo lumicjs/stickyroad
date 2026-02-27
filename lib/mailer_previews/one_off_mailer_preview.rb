@@ -18,4 +18,8 @@ class OneOffMailerPreview < ActionMailer::Preview
   def email_using_installment
     OneOffMailer.email_using_installment(user_id: User.last&.id, installment_external_id: Installment.last&.external_id)
   end
+
+  def top_creator_announcement
+    OneOffMailer.top_creator_announcement(user_id: User.last&.id)
+  end
 end

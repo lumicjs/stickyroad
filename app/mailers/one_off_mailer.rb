@@ -34,4 +34,21 @@ class OneOffMailer < ApplicationMailer
 
     email(user_id:, email:, subject: subject || @installment.subject, reply_to:, body: nil)
   end
+
+  def top_creator_announcement(user_id:)
+    user = User.alive.not_suspended.find_by(id: user_id)
+    return unless user
+
+    email = user.form_email
+    return unless EmailFormatValidator.valid?(email)
+
+    @subject = "You're a Top Creator!"
+
+    mail(
+      to: email,
+      from: "Gumroad <hi@#{CUSTOMERS_MAIL_DOMAIN}>",
+      subject: @subject,
+      delivery_method_options: MailerInfo.random_delivery_method_options(domain: :customers)
+    )
+  end
 end
