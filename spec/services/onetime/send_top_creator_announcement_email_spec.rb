@@ -20,12 +20,12 @@ describe Onetime::SendTopCreatorAnnouncementEmail do
   it "enqueues the email only for eligible verified users" do
     expect do
       described_class.new.process
-    end.to have_enqueued_mail(OneOffMailer, :top_creator_announcement).with(user_id: @verified_user_1.id).once
-       .and have_enqueued_mail(OneOffMailer, :top_creator_announcement).with(user_id: @verified_user_2.id).once
-       .and have_enqueued_mail(OneOffMailer, :top_creator_announcement).with(user_id: @unverified_user.id).exactly(0).times
-       .and have_enqueued_mail(OneOffMailer, :top_creator_announcement).with(user_id: @deleted_user.id).exactly(0).times
-       .and have_enqueued_mail(OneOffMailer, :top_creator_announcement).with(user_id: @suspended_user.id).exactly(0).times
-       .and have_enqueued_mail(OneOffMailer, :top_creator_announcement).with(user_id: @no_email_user.id).exactly(0).times
+    end.to have_enqueued_mail(CreatorMailer, :top_creator_announcement).with(user_id: @verified_user_1.id).once
+       .and have_enqueued_mail(CreatorMailer, :top_creator_announcement).with(user_id: @verified_user_2.id).once
+       .and have_enqueued_mail(CreatorMailer, :top_creator_announcement).with(user_id: @unverified_user.id).exactly(0).times
+       .and have_enqueued_mail(CreatorMailer, :top_creator_announcement).with(user_id: @deleted_user.id).exactly(0).times
+       .and have_enqueued_mail(CreatorMailer, :top_creator_announcement).with(user_id: @suspended_user.id).exactly(0).times
+       .and have_enqueued_mail(CreatorMailer, :top_creator_announcement).with(user_id: @no_email_user.id).exactly(0).times
   end
 
   it "tracks the last processed user id in Redis" do
@@ -41,8 +41,8 @@ describe Onetime::SendTopCreatorAnnouncementEmail do
     it "skips already-processed users" do
       expect do
         described_class.new.process
-      end.to have_enqueued_mail(OneOffMailer, :top_creator_announcement).with(user_id: @verified_user_1.id).exactly(0).times
-         .and have_enqueued_mail(OneOffMailer, :top_creator_announcement).with(user_id: @verified_user_2.id).once
+      end.to have_enqueued_mail(CreatorMailer, :top_creator_announcement).with(user_id: @verified_user_1.id).exactly(0).times
+         .and have_enqueued_mail(CreatorMailer, :top_creator_announcement).with(user_id: @verified_user_2.id).once
     end
   end
 

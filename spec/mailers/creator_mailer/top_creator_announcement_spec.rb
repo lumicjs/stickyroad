@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe OneOffMailer, "#top_creator_announcement" do
+describe CreatorMailer do
   describe "#top_creator_announcement" do
     it "doesn't send email if user does not exist" do
       mail = described_class.top_creator_announcement(user_id: 0)
@@ -32,7 +32,7 @@ describe OneOffMailer, "#top_creator_announcement" do
       user = create(:user)
       mail = described_class.top_creator_announcement(user_id: user.id)
       expect(mail.to).to eq([user.form_email])
-      expect(mail.from).to eq(["hi@#{CUSTOMERS_MAIL_DOMAIN}"])
+      expect(mail.from).to eq(["gumroad@#{CREATOR_CONTACTING_CUSTOMERS_MAIL_DOMAIN}"])
       expect(mail.subject).to eq("You're a Top Creator!")
     end
 

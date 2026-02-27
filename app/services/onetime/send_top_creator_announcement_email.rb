@@ -15,7 +15,7 @@ class Onetime::SendTopCreatorAnnouncementEmail < Onetime::Base
       .find_each do |user|
         next if user.form_email.blank?
 
-        OneOffMailer.top_creator_announcement(user_id: user.id).deliver_later(queue: "low")
+        CreatorMailer.top_creator_announcement(user_id: user.id).deliver_later(queue: "low")
         $redis.set(LAST_PROCESSED_USER_ID_KEY, user.id)
         Rails.logger.info "Enqueued top_creator_announcement email for user #{user.id}"
       end
