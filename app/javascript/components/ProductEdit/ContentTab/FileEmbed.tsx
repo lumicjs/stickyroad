@@ -1,3 +1,4 @@
+import { ArrowUp, ChevronDown, ChevronUp, Folder, FolderPlus, Fullscreen, FullscreenExit } from "@boxicons/react";
 import { DirectUpload } from "@rails/activestorage";
 import { Editor, findChildren, Node as TiptapNode } from "@tiptap/core";
 import { DOMSerializer, DOMParser as ProseMirrorDOMParser } from "@tiptap/pm/model";
@@ -19,7 +20,6 @@ import { Button, buttonVariants, NavigationButton } from "$app/components/Button
 import { connectedFileRowClassName } from "$app/components/Download/RichContent";
 import { useEvaporateUploader } from "$app/components/EvaporateUploader";
 import { FileRowContent } from "$app/components/FileRowContent";
-import { Icon } from "$app/components/Icons";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { PlayVideoIcon } from "$app/components/PlayVideoIcon";
 import { Popover, PopoverAnchor, PopoverClose, PopoverContent, PopoverTrigger } from "$app/components/Popover";
@@ -36,8 +36,13 @@ import { SubtitleList } from "$app/components/SubtitleList";
 import { SubtitleFile } from "$app/components/SubtitleList/Row";
 import { SubtitleUploadBox } from "$app/components/SubtitleUploadBox";
 import { NodeActionsMenu } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { Fieldset, FieldsetTitle } from "$app/components/ui/Fieldset";
+import { Input } from "$app/components/ui/Input";
+import { Label } from "$app/components/ui/Label";
 import { Placeholder } from "$app/components/ui/Placeholder";
 import { Row, RowActions, RowContent, RowDetails } from "$app/components/ui/Rows";
+import { Switch } from "$app/components/ui/Switch";
+import { Textarea } from "$app/components/ui/Textarea";
 import { WithTooltip } from "$app/components/WithTooltip";
 
 export const getDownloadUrl = (productId: string, file: FileEntry) =>
@@ -232,7 +237,12 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
     if (thumbnail) uploadThumbnail(thumbnail);
   };
   const thumbnailInput = (
-    <input type="file" accept=".jpg,.jpeg,.png,.gif" onChange={(e) => onThumbnailSelected(e.target.files)} />
+    <input
+      type="file"
+      className="sr-only"
+      accept=".jpg,.jpeg,.png,.gif"
+      onChange={(e) => onThumbnailSelected(e.target.files)}
+    />
   );
 
   const removeSubtitle = (url: string) =>
@@ -283,7 +293,7 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
   const folderAction = {
     item: () => (
       <>
-        <Icon name="solid-folder-open" />
+        <Folder pack="filled" className="size-5" />
         <span>Move to folder...</span>
       </>
     ),
@@ -294,7 +304,7 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
             onClick={() => editor.commands.moveFileEmbedToGroup({ fileUid: cast(node.attrs.uid), groupUid: null })}
             role="menuitem"
           >
-            <Icon name="folder-plus" />
+            <FolderPlus className="size-5" />
             <span>New folder</span>
           </div>
         )}
@@ -309,7 +319,7 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
             }}
             role="menuitem"
           >
-            <Icon name="solid-folder-open" />
+            <Folder pack="filled" className="size-5" />
             <span>{name || "Untitled"}</span>
           </div>
         ))}
@@ -407,7 +417,7 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
                         aria-label="Replace thumbnail"
                       >
                         {thumbnailInput}
-                        <Icon name="upload-fill" />
+                        <ArrowUp pack="filled" className="size-5" />
                       </label>
                     </WithTooltip>
                   </div>
@@ -418,7 +428,7 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
                 <Placeholder>
                   <label className={buttonVariants({ size: "default", color: "primary" })}>
                     {thumbnailInput}
-                    <Icon name="upload-fill" />
+                    <ArrowUp pack="filled" className="size-5" />
                     Upload a thumbnail
                   </label>
                   <div>
@@ -450,7 +460,7 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
                   {file.thumbnail ? <img src={file.thumbnail.url} /> : null}
                   <Placeholder>
                     {thumbnailInput}
-                    <Icon name="upload-fill" />
+                    <ArrowUp pack="filled" className="size-5" />
                   </Placeholder>
                 </>
               )}
@@ -503,8 +513,8 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
             <Popover>
               <PopoverAnchor>
                 <PopoverTrigger aria-label="Thumbnail view" asChild>
-                  <Button>
-                    <Icon name={node.attrs.collapsed ? "arrows-expand" : "arrows-collapse"} />
+                  <Button size="icon">
+                    {node.attrs.collapsed ? <Fullscreen className="size-5" /> : <FullscreenExit className="size-5" />}
                   </Button>
                 </PopoverTrigger>
               </PopoverAnchor>
@@ -517,7 +527,7 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
                         updateAttributes({ collapsed: !node.attrs.collapsed });
                       }}
                     >
-                      <Icon name={node.attrs.collapsed ? "arrows-expand" : "arrows-collapse"} />
+                      {node.attrs.collapsed ? <Fullscreen className="size-5" /> : <FullscreenExit className="size-5" />}
                       <span>{node.attrs.collapsed ? "Expand selected" : "Collapse selected"}</span>
                     </div>
                   </PopoverClose>
@@ -539,7 +549,7 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
                         });
                       }}
                     >
-                      <Icon name={node.attrs.collapsed ? "arrows-expand" : "arrows-collapse"} />
+                      {node.attrs.collapsed ? <Fullscreen className="size-5" /> : <FullscreenExit className="size-5" />}
                       <span>{node.attrs.collapsed ? "Expand all thumbnails" : "Collapse all thumbnails"}</span>
                     </div>
                   </PopoverClose>
@@ -549,8 +559,8 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
           ) : null}
 
           {!file.is_streamable || isComplete ? (
-            <Button onClick={() => setExpanded(!expanded)} aria-label={expanded ? "Close drawer" : "Edit"}>
-              <Icon name={expanded ? "outline-cheveron-up" : "outline-cheveron-down"} />
+            <Button size="icon" onClick={() => setExpanded(!expanded)} aria-label={expanded ? "Close drawer" : "Edit"}>
+              {expanded ? <ChevronUp className="size-5" /> : <ChevronDown className="size-5" />}
             </Button>
           ) : null}
 
@@ -590,24 +600,24 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
 
         {expanded ? (
           <RowDetails className="drawer flex flex-col gap-4">
-            <fieldset>
-              <legend>
-                <label htmlFor={`${uid}name`}>Name</label>
-              </legend>
-              <input
+            <Fieldset>
+              <FieldsetTitle>
+                <Label htmlFor={`${uid}name`}>Name</Label>
+              </FieldsetTitle>
+              <Input
                 type="text"
                 id={`${uid}name`}
                 value={file.display_name}
                 onChange={(evt) => updateFile({ display_name: evt.target.value })}
                 placeholder="Name"
               />
-            </fieldset>
+            </Fieldset>
 
-            <fieldset>
-              <legend>
-                <label htmlFor={`${uid}description`}>Description</label>
-              </legend>
-              <textarea
+            <Fieldset>
+              <FieldsetTitle>
+                <Label htmlFor={`${uid}description`}>Description</Label>
+              </FieldsetTitle>
+              <Textarea
                 id={`${uid}description`}
                 rows={3}
                 maxLength={65_535}
@@ -615,42 +625,42 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
                 onChange={(evt) => updateFile({ description: evt.target.value })}
                 placeholder="Description"
               />
-            </fieldset>
+            </Fieldset>
 
             {FileUtils.isDocumentExtension(file.extension) ? (
-              <fieldset>
-                <legend>
-                  <label htmlFor={`${uid}isbn`}>ISBN</label>
-                </legend>
-                <input
+              <Fieldset>
+                <FieldsetTitle>
+                  <Label htmlFor={`${uid}isbn`}>ISBN</Label>
+                </FieldsetTitle>
+                <Input
                   type="text"
                   id={`${uid}isbn`}
                   value={file.isbn ?? ""}
                   onChange={(evt) => updateFile({ isbn: evt.target.value })}
                   placeholder="ISBN"
                 />
-              </fieldset>
+              </Fieldset>
             ) : null}
 
             {file.is_pdf ? (
-              <label>
-                <input
-                  type="checkbox"
-                  role="switch"
-                  checked={file.pdf_stamp_enabled}
-                  onChange={(e) => updateFile({ pdf_stamp_enabled: e.target.checked })}
-                />
-                Stamp this PDF with buyer information
-                <a href="/help/article/130-pdf-stamping" target="_blank" rel="noreferrer">
-                  Learn more
-                </a>
-              </label>
+              <Switch
+                checked={file.pdf_stamp_enabled}
+                onChange={(e) => updateFile({ pdf_stamp_enabled: e.target.checked })}
+                label={
+                  <>
+                    Stamp this PDF with buyer information{" "}
+                    <a href="/help/article/130-pdf-stamping" target="_blank" rel="noreferrer">
+                      Learn more
+                    </a>
+                  </>
+                }
+              />
             ) : null}
 
             {file.is_streamable ? (
               <>
-                <fieldset>
-                  <legend>Subtitles</legend>
+                <Fieldset>
+                  <FieldsetTitle>Subtitles</FieldsetTitle>
                   <div className="flex flex-col gap-4">
                     <SubtitleList
                       subtitleFiles={file.subtitle_files}
@@ -666,19 +676,19 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
                     />
                     <SubtitleUploadBox onUploadFiles={uploadSubtitles} />
                   </div>
-                </fieldset>
-                <label>
-                  <input
-                    type="checkbox"
-                    role="switch"
-                    checked={file.stream_only}
-                    onChange={(e) => updateFile({ stream_only: e.target.checked })}
-                  />
-                  Disable file downloads (stream only)
-                  <a href="/help/article/43-streaming-videos" target="_blank" rel="noreferrer">
-                    Learn more
-                  </a>
-                </label>
+                </Fieldset>
+                <Switch
+                  checked={file.stream_only}
+                  onChange={(e) => updateFile({ stream_only: e.target.checked })}
+                  label={
+                    <>
+                      Disable file downloads (stream only){" "}
+                      <a href="/help/article/43-streaming-videos" target="_blank" rel="noreferrer">
+                        Learn more
+                      </a>
+                    </>
+                  }
+                />
               </>
             ) : null}
           </RowDetails>
