@@ -3,7 +3,7 @@ import * as React from "react";
 import { cast } from "ts-safe-cast";
 
 import { TextInput } from "$app/components/Download/CustomField/TextInput";
-import { NodeActionsMenu } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { NodeActionsMenu, nodeActionsMenuWrapperClassName } from "$app/components/TiptapExtensions/NodeActionsMenu";
 import { Fieldset } from "$app/components/ui/Fieldset";
 import { Input } from "$app/components/ui/Input";
 import { Textarea } from "$app/components/ui/Textarea";
@@ -20,7 +20,7 @@ export const TextInputNodeView = ({ editor, node, updateAttributes }: NodeViewPr
 
   return (
     <NodeViewWrapper data-drag-handle data-input-embed>
-      <Fieldset>
+      <Fieldset className={editor.isEditable ? nodeActionsMenuWrapperClassName : undefined}>
         {editor.isEditable ? (
           <>
             <NodeActionsMenu editor={editor} />

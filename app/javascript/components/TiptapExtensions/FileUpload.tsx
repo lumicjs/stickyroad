@@ -6,7 +6,7 @@ import { cast } from "ts-safe-cast";
 
 import { Button } from "$app/components/Button";
 import { FileInput } from "$app/components/Download/CustomField/FileInput";
-import { NodeActionsMenu } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { NodeActionsMenu, nodeActionsMenuWrapperClassName } from "$app/components/TiptapExtensions/NodeActionsMenu";
 import { createInsertCommand } from "$app/components/TiptapExtensions/utils";
 import { Placeholder } from "$app/components/ui/Placeholder";
 
@@ -47,7 +47,7 @@ const FileUploadNodeView = ({ editor, node }: NodeViewProps) => {
   }
 
   return (
-    <NodeViewWrapper contentEditable={false} data-input-embed>
+    <NodeViewWrapper contentEditable={false} data-input-embed className={nodeActionsMenuWrapperClassName}>
       <NodeActionsMenu editor={editor} />
       <Placeholder>
         <Button color="primary">

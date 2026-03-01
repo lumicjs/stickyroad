@@ -17,7 +17,7 @@ import { Button, NavigationButton } from "$app/components/Button";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "$app/components/Popover";
 import { showAlert } from "$app/components/server-components/Alert";
-import { NodeActionsMenu } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { NodeActionsMenu, nodeActionsMenuWrapperClassName } from "$app/components/TiptapExtensions/NodeActionsMenu";
 import { Input } from "$app/components/ui/Input";
 import { Row, RowActions, RowContent, RowDetails, Rows } from "$app/components/ui/Rows";
 import { useRunOnce } from "$app/components/useRunOnce";
@@ -147,7 +147,7 @@ const FileEmbedGroupNodeView = ({
           }
         }}
       >
-        <Row role="treeitem" aria-expanded={expanded} className={cx({ selected })}>
+        <Row role="treeitem" aria-expanded={expanded} className={cx({ selected }, editor.isEditable && nodeActionsMenuWrapperClassName)}>
           {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
           <RowContent onClick={() => setExpanded(!expanded)} contentEditable={false}>
             {expanded ? <ChevronDown className="size-5" /> : <ChevronRight className="size-5" />}

@@ -35,7 +35,7 @@ import { showAlert } from "$app/components/server-components/Alert";
 import { SubtitleList } from "$app/components/SubtitleList";
 import { SubtitleFile } from "$app/components/SubtitleList/Row";
 import { SubtitleUploadBox } from "$app/components/SubtitleUploadBox";
-import { NodeActionsMenu } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { NodeActionsMenu, nodeActionsMenuWrapperClassName } from "$app/components/TiptapExtensions/NodeActionsMenu";
 import { Fieldset, FieldsetTitle } from "$app/components/ui/Fieldset";
 import { Input } from "$app/components/ui/Input";
 import { Label } from "$app/components/ui/Label";
@@ -383,7 +383,7 @@ const FileEmbedNodeView = ({ node, editor, getPos, updateAttributes }: NodeViewP
       contentEditable={false}
     >
       <Row
-        className={cx("embed", { selected, [connectedFileRowClassName(isLastInGroup)]: isConnectedRow })}
+        className={cx("embed", { selected, [connectedFileRowClassName(isLastInGroup)]: isConnectedRow }, nodeActionsMenuWrapperClassName)}
         role={isInGroup ? "treeitem" : undefined}
       >
         {file.is_streamable && !node.attrs.collapsed ? (

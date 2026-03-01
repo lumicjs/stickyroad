@@ -133,49 +133,6 @@
     }
   }
 
-  .actions-menu {
-    position: absolute;
-    bottom: spacer(4);
-    left: 0;
-    @include font-size(2);
-    z-index: z-index(overlay);
-
-    @include breakpoint-up(lg) {
-      display: none;
-      bottom: unset;
-      top: spacer(5);
-      left: -(spacer(2));
-      translate: -100% 0;
-    }
-  }
-
-  :has(> .actions-menu) {
-    position: relative;
-
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0 100% 0 #{-(spacer(7))};
-    }
-
-    &:hover:not(:has(.react-renderer:hover)) > .actions-menu,
-    &.selected > .actions-menu,
-    > .menu[open] {
-      display: unset;
-      grid-column: unset;
-    }
-
-    &.selected {
-      border-radius: border-radius(1);
-      outline: $outline;
-      // Fix outline clipping when items are next to each other in a list
-      position: relative;
-    }
-
-    [role="group"] {
-      padding-left: spacer(5);
-    }
-  }
 
   .react-renderer[draggable] {
     cursor: unset;

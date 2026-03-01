@@ -12,7 +12,7 @@ import { Button } from "$app/components/Button";
 import { FileRowContent } from "$app/components/FileRowContent";
 import { usePublicFilesSettings } from "$app/components/ProductEdit/ProductTab/DescriptionEditor";
 import { MenuItem } from "$app/components/RichTextEditor";
-import { NodeActionsMenu } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { NodeActionsMenu, nodeActionsMenuWrapperClassName } from "$app/components/TiptapExtensions/NodeActionsMenu";
 import { Fieldset, FieldsetTitle } from "$app/components/ui/Fieldset";
 import { Input } from "$app/components/ui/Input";
 import { Label } from "$app/components/ui/Label";
@@ -36,7 +36,7 @@ const NodeView = ({ editor, node }: NodeViewProps) => {
 
   return (
     <NodeViewWrapper contentEditable={false}>
-      <Row className={cx("embed", { selected })}>
+      <Row className={cx("embed", { selected }, editor.isEditable && nodeActionsMenuWrapperClassName)}>
         {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
         <RowContent className="content">
           <FileRowContent

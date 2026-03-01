@@ -7,6 +7,19 @@ import { assertDefined } from "$app/utils/assert";
 import { Button } from "$app/components/Button";
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "$app/components/Popover";
 
+export const nodeActionsMenuWrapperClassName = [
+  "relative",
+  "before:content-[''] before:absolute before:[inset:0_100%_0_-3rem]",
+  "[&:hover:not(:has(.react-renderer:hover))>.actions-menu]:[display:unset]",
+  "[&:hover:not(:has(.react-renderer:hover))>.actions-menu]:[grid-column:unset]",
+  "[&.selected>.actions-menu]:[display:unset]",
+  "[&.selected>.actions-menu]:[grid-column:unset]",
+  "[&>.menu[open]]:[display:unset]",
+  "[&>.menu[open]]:[grid-column:unset]",
+  "[&.selected]:rounded [&.selected]:outline [&.selected]:outline-2 [&.selected]:outline-accent [&.selected]:relative",
+  "[&_[role=group]]:pl-6",
+].join(" ");
+
 export const NodeActionsMenu = ({
   editor,
   actions,
@@ -19,7 +32,7 @@ export const NodeActionsMenu = ({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <div className="actions-menu">
+      <div className="actions-menu absolute bottom-4 left-0 z-[1] text-base leading-[1.375] lg:bottom-auto lg:-left-2 lg:top-6 lg:hidden lg:-translate-x-full">
         <PopoverAnchor>
           <PopoverTrigger aria-label="Actions" data-drag-handle draggable asChild>
             <Button size="sm" color="filled">

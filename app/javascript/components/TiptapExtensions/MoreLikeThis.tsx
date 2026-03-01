@@ -9,7 +9,7 @@ import { getRecommendedProducts, RecommendationType } from "$app/data/recommende
 import { CardProduct } from "$app/parsers/product";
 
 import { Card } from "$app/components/Product/Card";
-import { NodeActionsMenu } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { NodeActionsMenu, nodeActionsMenuWrapperClassName } from "$app/components/TiptapExtensions/NodeActionsMenu";
 import { Label } from "$app/components/ui/Label";
 import { Placeholder } from "$app/components/ui/Placeholder";
 import { ProductCardGrid } from "$app/components/ui/ProductCardGrid";
@@ -73,7 +73,7 @@ const MoreLikeThisNodeView = ({ editor, node, extension, selected }: NodeViewPro
 
   return (
     <NodeViewWrapper>
-      <div className={cx({ selected })}>
+      <div className={cx({ selected }, editor.isEditable && nodeActionsMenuWrapperClassName)}>
         {editor.isEditable ? (
           <NodeActionsMenu
             editor={editor}

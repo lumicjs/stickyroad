@@ -9,7 +9,7 @@ import { assertDefined } from "$app/utils/assert";
 import { Button } from "$app/components/Button";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { Drawer } from "$app/components/SortableList";
-import { NodeActionsMenu } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { NodeActionsMenu, nodeActionsMenuWrapperClassName } from "$app/components/TiptapExtensions/NodeActionsMenu";
 import { createInsertCommand } from "$app/components/TiptapExtensions/utils";
 import { Fieldset, FieldsetTitle } from "$app/components/ui/Fieldset";
 import { Input } from "$app/components/ui/Input";
@@ -50,7 +50,7 @@ const LicenseKeyNodeView = ({ editor, selected }: NodeViewProps) => {
 
   return (
     <NodeViewWrapper>
-      <Row className={cx("embed", { selected })}>
+      <Row className={cx("embed", { selected }, editor.isEditable && nodeActionsMenuWrapperClassName)}>
         {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
         <RowContent className="content" contentEditable={false}>
           <Key pack="filled" className="type-icon size-5" />
