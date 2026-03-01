@@ -246,59 +246,6 @@
   }
 }
 
-.rich-text-editor-toolbar[role="toolbar"] {
-  position: sticky;
-  top: 0;
-  @include bg-color(primary);
-  display: flex;
-  gap: spacer(1);
-  flex-wrap: wrap;
-  padding-block: spacer(1);
-  z-index: z-index(overlay);
-
-  &.ghost {
-    @include bg-color(filled);
-  }
-
-  .toolbar-item {
-    padding: spacer(1) spacer(2);
-    border-radius: border-radius(1);
-
-    &:hover {
-      background-color: gray(1);
-    }
-
-    &[aria-pressed="true"],
-    .active {
-      color: full-color(accent);
-    }
-  }
-
-  [role="separator"] {
-    display: none;
-    border-right: solid $border-width gray(3);
-    margin: spacer(2);
-
-    &::before {
-      content: none;
-    }
-
-    @include breakpoint-up(sm) {
-      display: flex;
-    }
-  }
-
-  [role="menuitemradio"] {
-    &[aria-checked="true"] {
-      background-color: var(--active-bg);
-    }
-  }
-}
-
-:where(.rich-text-editor-toolbar) {
-  padding-inline: spacer(2);
-}
-
 .ProseMirror[contenteditable="true"] {
   white-space: break-spaces;
 
@@ -331,12 +278,6 @@
   grid-template-rows: max-content 1fr;
   min-height: size(14);
   border-radius: border-radius(1);
-
-  .rich-text-editor-toolbar[role="toolbar"] {
-    border: $border;
-    border-bottom: none;
-    border-radius: border-radius(1) border-radius(1) 0 0;
-  }
 
   .textarea {
     border-top-left-radius: 0;

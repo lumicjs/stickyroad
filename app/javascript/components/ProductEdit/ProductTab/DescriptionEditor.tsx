@@ -1,4 +1,4 @@
-import { DirectUpload, DirectUploadDelegate, Blob } from "@rails/activestorage";
+import { Blob, DirectUpload, DirectUploadDelegate } from "@rails/activestorage";
 import { Node as ProseMirrorNode } from "@tiptap/pm/model";
 import { EditorView } from "@tiptap/pm/view";
 import { Editor, EditorContent } from "@tiptap/react";
@@ -349,7 +349,13 @@ export const DescriptionEditor = ({
       <PublicFilesSettingsContext.Provider value={publicFilesSettings}>
         <ImageUploadSettingsContext.Provider value={imageSettings}>
           <div className="rich-text-editor" data-gumroad-ignore>
-            {editor ? <RichTextEditorToolbar editor={editor} productId={id} /> : null}
+            {editor ? (
+              <RichTextEditorToolbar
+                editor={editor}
+                productId={id}
+                className="rounded-t rounded-b-none border border-b-0 border-border"
+              />
+            ) : null}
             <EditorContent className="rich-text" editor={editor} />
           </div>
         </ImageUploadSettingsContext.Provider>
