@@ -9,20 +9,17 @@ import { classNames } from "$app/utils/classNames";
 import { Button } from "$app/components/Button";
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "$app/components/Popover";
 
-const wrapperClassName = [
-  "relative",
-  "before:content-[''] before:absolute before:[inset:0_100%_0_-3rem]",
-  "[&:hover:not(:has(.react-renderer:hover))>.actions-menu]:[display:unset]",
-].join(" ");
+const wrapperClassName = ["relative", "before:content-[''] before:absolute before:[inset:0_100%_0_-3rem]"].join(" ");
 
-const selectedClassName = "rounded outline outline-2 outline-accent relative [&_*::selection]:[background:none]";
+const selectedClassName = "rounded outline outline-2 outline-accent relative [&_*::selection]:bg-none";
 
 const SelectedContext = React.createContext(false);
 
 export const NodeActionsWrapper = ({
-  selected,
+  selected = false,
   isEditable = true,
   asChild,
+  childHovered,
   className,
   children,
   ...rest
@@ -30,12 +27,18 @@ export const NodeActionsWrapper = ({
   selected?: boolean;
   isEditable?: boolean;
   asChild?: boolean;
+  childHovered?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>) => {
   const Component = asChild ? Slot : "div";
   return (
-    <SelectedContext.Provider value={selected ?? false}>
+    <SelectedContext.Provider value={selected}>
       <Component
-        className={classNames(isEditable && wrapperClassName, selected && selectedClassName, className)}
+        className={classNames(
+          isEditable && wrapperClassName,
+          isEditable && !childHovered && "group/node-actions",
+          selected && selectedClassName,
+          className,
+        )}
         {...rest}
       >
         {children}
@@ -60,6 +63,7 @@ export const NodeActionsMenu = ({
       <div
         className={classNames(
           "actions-menu absolute bottom-4 left-0 z-[1] text-base leading-[1.375] lg:top-6 lg:bottom-auto lg:-left-2 lg:-translate-x-full",
+          "group-hover/node-actions:lg:block",
           !selected && !open && "lg:hidden",
         )}
       >

@@ -65,6 +65,7 @@ const FileEmbedGroupNodeView = ({
   const [expanded, setExpanded] = React.useState(false);
   const [downloading, setDownloading] = React.useState(false);
   const [editing, setEditing] = React.useState(false);
+  const [childHovered, setChildHovered] = React.useState(false);
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions -- https://tiptap.dev/guide/typescript#storage-types
   const storage = extension.storage as FileEmbedGroupStorage;
   const isNew = node.attrs.uid === storage.lastCreatedUid;
@@ -136,6 +137,8 @@ const FileEmbedGroupNodeView = ({
     setDownloading(false);
   };
 
+  React.useEffect(() => console.log("child hovered", childHovered), [childHovered]);
+
   return (
     <NodeViewWrapper contentEditable={false}>
       <Rows
@@ -146,103 +149,114 @@ const FileEmbedGroupNodeView = ({
           }
         }}
       >
-        <NodeActionsWrapper selected={selected} isEditable={editor.isEditable} asChild>
-        <Row role="treeitem" aria-expanded={expanded}>
-          {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
-          <RowContent onClick={() => setExpanded(!expanded)} contentEditable={false}>
-            {expanded ? <ChevronDown className="size-5" /> : <ChevronRight className="size-5" />}
-            <Folder pack="filled" className="type-icon size-5" />
-            {editing ? (
-              <Input
-                type="text"
-                ref={inputRef}
-                defaultValue={node.attrs.name ? String(node.attrs.name) : ""}
-                maxLength={120}
-                placeholder="Folder name"
-                onClick={(e) => e.stopPropagation()}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    updateName(e.currentTarget.value);
-                  }
-                }}
-                onBlur={(e) => updateName(e.currentTarget.value)}
-              />
-            ) : (
-              <div>
-                <h4>{folderTitle}</h4>
-              </div>
-            )}
-          </RowContent>
-          {showDownloadButton || editor.isEditable ? (
-            <RowActions>
-              {showDownloadButton ? (
-                <Popover>
-                  <PopoverAnchor>
-                    <PopoverTrigger asChild>
-                      <Button>
-                        Download all
-                        <ChevronDown className="size-5" />
-                      </Button>
-                    </PopoverTrigger>
-                  </PopoverAnchor>
-                  <PopoverContent sideOffset={4}>
-                    <div className="grid gap-2">
-                      {downloading ? (
-                        <Button disabled>
-                          <LoadingSpinner />
-                          Zipping files...
-                        </Button>
-                      ) : isTuple(downloadableFiles, 1) ? (
-                        <NavigationButton
-                          href={downloadableFiles[0].url ?? undefined}
-                          download={downloadableFiles[0].display_name}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Download file
-                        </NavigationButton>
-                      ) : (
-                        <Button onClick={() => void download()}>Download as ZIP</Button>
-                      )}
-                      <Button disabled={downloading} onClick={() => void saveToDropbox()}>
-                        <DropboxIcon pack="brands" className="size-5" />
-                        Save to Dropbox
-                      </Button>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              ) : null}
-              {editor.isEditable ? (
-                <Button
-                  size="icon"
-                  aria-label="Edit"
-                  onMouseDown={(e) => {
-                    // NoOp if the user is already editing the name since it will
-                    // automatically blur the input
-                    if (editing) return;
-
-                    // Prevent Tiptap selecting the node since it causes state mismatch errors
-                    e.stopPropagation();
-
-                    setEditing(true);
-                    requestAnimationFrame(() => inputRef.current?.focus());
+        <NodeActionsWrapper selected={selected} isEditable={editor.isEditable} childHovered={childHovered} asChild>
+          <Row role="treeitem" aria-expanded={expanded}>
+            {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
+            <RowContent onClick={() => setExpanded(!expanded)} contentEditable={false}>
+              {expanded ? <ChevronDown className="size-5" /> : <ChevronRight className="size-5" />}
+              <Folder pack="filled" className="type-icon size-5" />
+              {editing ? (
+                <Input
+                  type="text"
+                  ref={inputRef}
+                  defaultValue={node.attrs.name ? String(node.attrs.name) : ""}
+                  maxLength={120}
+                  placeholder="Folder name"
+                  onClick={(e) => e.stopPropagation()}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      updateName(e.currentTarget.value);
+                    }
                   }}
-                >
-                  {editing ? <Check className="size-5" /> : <Pencil className="size-5" />}
-                </Button>
-              ) : null}
-            </RowActions>
-          ) : null}
-          <RowDetails role="group" className={classNames({ hidden: !expanded }, editor.isEditable && "pl-6")}>
-            {hasStreamable ? (
-              <NodeViewContent id={uid} />
-            ) : (
-              <Rows>
+                  onBlur={(e) => updateName(e.currentTarget.value)}
+                />
+              ) : (
+                <div>
+                  <h4>{folderTitle}</h4>
+                </div>
+              )}
+            </RowContent>
+            {showDownloadButton || editor.isEditable ? (
+              <RowActions>
+                {showDownloadButton ? (
+                  <Popover>
+                    <PopoverAnchor>
+                      <PopoverTrigger asChild>
+                        <Button>
+                          Download all
+                          <ChevronDown className="size-5" />
+                        </Button>
+                      </PopoverTrigger>
+                    </PopoverAnchor>
+                    <PopoverContent sideOffset={4}>
+                      <div className="grid gap-2">
+                        {downloading ? (
+                          <Button disabled>
+                            <LoadingSpinner />
+                            Zipping files...
+                          </Button>
+                        ) : isTuple(downloadableFiles, 1) ? (
+                          <NavigationButton
+                            href={downloadableFiles[0].url ?? undefined}
+                            download={downloadableFiles[0].display_name}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Download file
+                          </NavigationButton>
+                        ) : (
+                          <Button onClick={() => void download()}>Download as ZIP</Button>
+                        )}
+                        <Button disabled={downloading} onClick={() => void saveToDropbox()}>
+                          <DropboxIcon pack="brands" className="size-5" />
+                          Save to Dropbox
+                        </Button>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                ) : null}
+                {editor.isEditable ? (
+                  <Button
+                    size="icon"
+                    aria-label="Edit"
+                    onMouseDown={(e) => {
+                      // NoOp if the user is already editing the name since it will
+                      // automatically blur the input
+                      if (editing) return;
+
+                      // Prevent Tiptap selecting the node since it causes state mismatch errors
+                      e.stopPropagation();
+
+                      setEditing(true);
+                      requestAnimationFrame(() => inputRef.current?.focus());
+                    }}
+                  >
+                    {editing ? <Check className="size-5" /> : <Pencil className="size-5" />}
+                  </Button>
+                ) : null}
+              </RowActions>
+            ) : null}
+            <RowDetails
+              role="group"
+              className={classNames({ hidden: !expanded }, editor.isEditable && "pl-6")}
+              onMouseOver={() => {
+                console.log("mouse enter");
+                setChildHovered(true);
+              }}
+              onMouseOut={() => {
+                console.log("mouse leave");
+                setChildHovered(false);
+              }}
+            >
+              {hasStreamable ? (
                 <NodeViewContent id={uid} />
-              </Rows>
-            )}
-          </RowDetails>
-        </Row>
+              ) : (
+                <Rows>
+                  <NodeViewContent id={uid} />
+                </Rows>
+              )}
+            </RowDetails>
+          </Row>
         </NodeActionsWrapper>
       </Rows>
     </NodeViewWrapper>
