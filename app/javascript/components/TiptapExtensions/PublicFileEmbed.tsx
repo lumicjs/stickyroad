@@ -2,7 +2,6 @@ import { ChevronDown, ChevronUp, Music } from "@boxicons/react";
 import { Node as TiptapNode } from "@tiptap/core";
 import { NodeSelection } from "@tiptap/pm/state";
 import { NodeViewProps, NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
-import cx from "classnames";
 import * as React from "react";
 
 import FileUtils, { FILE_TYPE_EXTENSIONS_MAP } from "$app/utils/file";
@@ -12,7 +11,7 @@ import { Button } from "$app/components/Button";
 import { FileRowContent } from "$app/components/FileRowContent";
 import { usePublicFilesSettings } from "$app/components/ProductEdit/ProductTab/DescriptionEditor";
 import { MenuItem } from "$app/components/RichTextEditor";
-import { NodeActionsMenu, nodeActionsMenuWrapperClassName } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { NodeActionsMenu, NodeActionsWrapper } from "$app/components/TiptapExtensions/NodeActionsMenu";
 import { Fieldset, FieldsetTitle } from "$app/components/ui/Fieldset";
 import { Input } from "$app/components/ui/Input";
 import { Label } from "$app/components/ui/Label";
@@ -36,7 +35,8 @@ const NodeView = ({ editor, node }: NodeViewProps) => {
 
   return (
     <NodeViewWrapper contentEditable={false}>
-      <Row className={cx("embed", { selected }, editor.isEditable && nodeActionsMenuWrapperClassName)}>
+      <NodeActionsWrapper selected={selected} isEditable={editor.isEditable} asChild>
+        <Row className="embed">
         {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
         <RowContent className="content">
           <FileRowContent
@@ -99,6 +99,7 @@ const NodeView = ({ editor, node }: NodeViewProps) => {
           </RowDetails>
         ) : null}
       </Row>
+      </NodeActionsWrapper>
     </NodeViewWrapper>
   );
 };

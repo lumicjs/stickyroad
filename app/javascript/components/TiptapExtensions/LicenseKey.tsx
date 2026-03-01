@@ -1,7 +1,6 @@
 import { ChevronDown, ChevronUp, Key } from "@boxicons/react";
 import { Node as TiptapNode } from "@tiptap/core";
 import { NodeViewProps, NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
-import cx from "classnames";
 import * as React from "react";
 
 import { assertDefined } from "$app/utils/assert";
@@ -9,7 +8,7 @@ import { assertDefined } from "$app/utils/assert";
 import { Button } from "$app/components/Button";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { Drawer } from "$app/components/SortableList";
-import { NodeActionsMenu, nodeActionsMenuWrapperClassName } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { NodeActionsMenu, NodeActionsWrapper } from "$app/components/TiptapExtensions/NodeActionsMenu";
 import { createInsertCommand } from "$app/components/TiptapExtensions/utils";
 import { Fieldset, FieldsetTitle } from "$app/components/ui/Fieldset";
 import { Input } from "$app/components/ui/Input";
@@ -50,7 +49,8 @@ const LicenseKeyNodeView = ({ editor, selected }: NodeViewProps) => {
 
   return (
     <NodeViewWrapper>
-      <Row className={cx("embed", { selected }, editor.isEditable && nodeActionsMenuWrapperClassName)}>
+      <NodeActionsWrapper selected={selected} isEditable={editor.isEditable} asChild>
+        <Row className="embed">
         {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
         <RowContent className="content" contentEditable={false}>
           <Key pack="filled" className="type-icon size-5" />
@@ -106,6 +106,7 @@ const LicenseKeyNodeView = ({ editor, selected }: NodeViewProps) => {
           </RowDetails>
         ) : null}
       </Row>
+      </NodeActionsWrapper>
     </NodeViewWrapper>
   );
 };

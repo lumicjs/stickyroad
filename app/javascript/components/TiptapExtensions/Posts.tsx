@@ -12,7 +12,7 @@ import { Button } from "$app/components/Button";
 import { TrackClick } from "$app/components/Download/Interactions";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Drawer } from "$app/components/SortableList";
-import { NodeActionsMenu, nodeActionsMenuWrapperClassName } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { NodeActionsMenu, NodeActionsWrapper } from "$app/components/TiptapExtensions/NodeActionsMenu";
 import { createInsertCommand } from "$app/components/TiptapExtensions/utils";
 import { Row, RowActions, RowContent, RowDetails } from "$app/components/ui/Rows";
 import { useUserAgentInfo } from "$app/components/UserAgent";
@@ -59,7 +59,8 @@ const PostsNodeView = ({ editor, selected }: NodeViewProps) => {
 
   return (
     <NodeViewWrapper>
-      <Row className={cx("embed", { selected }, editor.isEditable && nodeActionsMenuWrapperClassName)}>
+      <NodeActionsWrapper selected={selected} isEditable={editor.isEditable} asChild>
+        <Row className="embed">
         {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
         <RowContent className="content cursor-pointer all-unset" asChild>
           <button
@@ -153,6 +154,7 @@ const PostsNodeView = ({ editor, selected }: NodeViewProps) => {
           </RowDetails>
         ) : null}
       </Row>
+      </NodeActionsWrapper>
     </NodeViewWrapper>
   );
 };

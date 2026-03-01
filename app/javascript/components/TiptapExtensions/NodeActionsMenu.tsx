@@ -1,24 +1,48 @@
 import { ArrowDown, ArrowUp, ChevronLeft, DotsVerticalRounded, Trash } from "@boxicons/react";
+import { Slot } from "@radix-ui/react-slot";
 import { Editor } from "@tiptap/core";
 import * as React from "react";
 
 import { assertDefined } from "$app/utils/assert";
+import { classNames } from "$app/utils/classNames";
 
 import { Button } from "$app/components/Button";
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "$app/components/Popover";
 
-export const nodeActionsMenuWrapperClassName = [
+const wrapperClassName = [
   "relative",
   "before:content-[''] before:absolute before:[inset:0_100%_0_-3rem]",
   "[&:hover:not(:has(.react-renderer:hover))>.actions-menu]:[display:unset]",
   "[&:hover:not(:has(.react-renderer:hover))>.actions-menu]:[grid-column:unset]",
-  "[&.selected>.actions-menu]:[display:unset]",
-  "[&.selected>.actions-menu]:[grid-column:unset]",
   "[&>.menu[open]]:[display:unset]",
   "[&>.menu[open]]:[grid-column:unset]",
-  "[&.selected]:rounded [&.selected]:outline [&.selected]:outline-2 [&.selected]:outline-accent [&.selected]:relative",
-  "[&_[role=group]]:pl-6",
 ].join(" ");
+
+const selectedClassName =
+  "rounded outline outline-2 outline-accent relative [&>.actions-menu]:[display:unset] [&>.actions-menu]:[grid-column:unset] [&_*::selection]:[background:none]";
+
+export const NodeActionsWrapper = ({
+  selected,
+  isEditable = true,
+  asChild,
+  className,
+  children,
+  ...rest
+}: {
+  selected?: boolean;
+  isEditable?: boolean;
+  asChild?: boolean;
+} & React.HTMLAttributes<HTMLDivElement>) => {
+  const Component = asChild ? Slot : "div";
+  return (
+    <Component
+      className={classNames(isEditable && wrapperClassName, selected && selectedClassName, className)}
+      {...rest}
+    >
+      {children}
+    </Component>
+  );
+};
 
 export const NodeActionsMenu = ({
   editor,

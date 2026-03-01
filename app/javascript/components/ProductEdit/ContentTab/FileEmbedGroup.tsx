@@ -3,7 +3,6 @@ import { Node as TiptapNode } from "@tiptap/core";
 import { Node as ProseMirrorNode } from "@tiptap/pm/model";
 import { NodeSelection } from "@tiptap/pm/state";
 import { NodeViewContent, NodeViewProps, NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
-import cx from "classnames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
@@ -17,7 +16,7 @@ import { Button, NavigationButton } from "$app/components/Button";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "$app/components/Popover";
 import { showAlert } from "$app/components/server-components/Alert";
-import { NodeActionsMenu, nodeActionsMenuWrapperClassName } from "$app/components/TiptapExtensions/NodeActionsMenu";
+import { NodeActionsMenu, NodeActionsWrapper } from "$app/components/TiptapExtensions/NodeActionsMenu";
 import { Input } from "$app/components/ui/Input";
 import { Row, RowActions, RowContent, RowDetails, Rows } from "$app/components/ui/Rows";
 import { useRunOnce } from "$app/components/useRunOnce";
@@ -147,7 +146,8 @@ const FileEmbedGroupNodeView = ({
           }
         }}
       >
-        <Row role="treeitem" aria-expanded={expanded} className={cx({ selected }, editor.isEditable && nodeActionsMenuWrapperClassName)}>
+        <NodeActionsWrapper selected={selected} isEditable={editor.isEditable} asChild>
+        <Row role="treeitem" aria-expanded={expanded}>
           {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
           <RowContent onClick={() => setExpanded(!expanded)} contentEditable={false}>
             {expanded ? <ChevronDown className="size-5" /> : <ChevronRight className="size-5" />}
@@ -233,7 +233,7 @@ const FileEmbedGroupNodeView = ({
               ) : null}
             </RowActions>
           ) : null}
-          <RowDetails role="group" className={classNames({ hidden: !expanded })}>
+          <RowDetails role="group" className={classNames({ hidden: !expanded }, editor.isEditable && "pl-6")}>
             {hasStreamable ? (
               <NodeViewContent id={uid} />
             ) : (
@@ -243,6 +243,7 @@ const FileEmbedGroupNodeView = ({
             )}
           </RowDetails>
         </Row>
+        </NodeActionsWrapper>
       </Rows>
     </NodeViewWrapper>
   );
