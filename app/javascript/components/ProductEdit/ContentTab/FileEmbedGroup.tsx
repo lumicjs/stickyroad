@@ -65,7 +65,6 @@ const FileEmbedGroupNodeView = ({
   const [expanded, setExpanded] = React.useState(false);
   const [downloading, setDownloading] = React.useState(false);
   const [editing, setEditing] = React.useState(false);
-  const [childHovered, setChildHovered] = React.useState(false);
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions -- https://tiptap.dev/guide/typescript#storage-types
   const storage = extension.storage as FileEmbedGroupStorage;
   const isNew = node.attrs.uid === storage.lastCreatedUid;
@@ -137,8 +136,6 @@ const FileEmbedGroupNodeView = ({
     setDownloading(false);
   };
 
-  React.useEffect(() => console.log("child hovered", childHovered), [childHovered]);
-
   return (
     <NodeViewWrapper contentEditable={false}>
       <Rows
@@ -149,7 +146,7 @@ const FileEmbedGroupNodeView = ({
           }
         }}
       >
-        <NodeActionsWrapper selected={selected} isEditable={editor.isEditable} childHovered={childHovered} asChild>
+        <NodeActionsWrapper selected={selected} isEditable={editor.isEditable} asChild>
           <Row role="treeitem" aria-expanded={expanded}>
             {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
             <RowContent onClick={() => setExpanded(!expanded)} contentEditable={false}>
@@ -236,18 +233,7 @@ const FileEmbedGroupNodeView = ({
                 ) : null}
               </RowActions>
             ) : null}
-            <RowDetails
-              role="group"
-              className={classNames({ hidden: !expanded }, editor.isEditable && "pl-6")}
-              onMouseOver={() => {
-                console.log("mouse enter");
-                setChildHovered(true);
-              }}
-              onMouseOut={() => {
-                console.log("mouse leave");
-                setChildHovered(false);
-              }}
-            >
+            <RowDetails role="group" data-child-area className={classNames({ hidden: !expanded }, editor.isEditable && "pl-6")}>
               {hasStreamable ? (
                 <NodeViewContent id={uid} />
               ) : (
