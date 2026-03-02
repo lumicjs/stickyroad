@@ -9,15 +9,6 @@ import { classNames } from "$app/utils/classNames";
 import { Button } from "$app/components/Button";
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "$app/components/Popover";
 
-const wrapperClassName = [
-  "relative",
-  "before:content-[''] before:absolute before:[inset:0_100%_0_-3rem]",
-  "[&:hover>[data-actions-menu]]:lg:block",
-  "[&:has([data-child-area]:hover)>[data-actions-menu]]:lg:hidden",
-].join(" ");
-
-const selectedClassName = "rounded outline outline-2 outline-accent relative [&_*::selection]:bg-none";
-
 const SelectedContext = React.createContext(false);
 
 export const NodeActionsWrapper = ({
@@ -36,7 +27,15 @@ export const NodeActionsWrapper = ({
   return (
     <SelectedContext.Provider value={selected}>
       <Component
-        className={classNames(isEditable && wrapperClassName, selected && selectedClassName, className)}
+        className={classNames(
+          isEditable && [
+            "relative before:absolute before:[inset:0_100%_0_-3rem] before:content-['']",
+            "[&:hover>[data-actions-menu]]:lg:block",
+            "[&:has([data-child-area]:hover)>[data-actions-menu]]:lg:hidden",
+          ],
+          selected && "relative rounded outline-2 outline-accent [&_*::selection]:bg-none",
+          className,
+        )}
         {...rest}
       >
         {children}
