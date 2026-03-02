@@ -1081,27 +1081,27 @@ describe("Product Edit Rich Text Editor", type: :system, js: true) do
         visit edit_link_path(@product) + "/content"
 
         within find_embed(name: "First file").hover do
-          select_disclosure "Actions" do
-            expect(page.document).to have_menuitem("Move to folder...")
-          end
+          toggle_disclosure "Actions"
+          expect(page.document).to have_menuitem("Move to folder...")
+          toggle_disclosure "Actions", expand: false
         end
 
         within find_file_group("Folder 1").hover do
-          select_disclosure "Actions" do
-            expect(page.document).to_not have_menuitem("Move to folder...")
-          end
+          toggle_disclosure "Actions"
+          expect(page.document).to_not have_menuitem("Move to folder...")
+          toggle_disclosure "Actions", expand: false
         end
 
         within find_embed(name: "6F0E4C97-B72A4E69-A11BF6C4-AF6517E7").hover do
-          select_disclosure "Actions" do
-            expect(page.document).to_not have_menuitem("Move to folder...")
-          end
+          toggle_disclosure "Actions"
+          expect(page.document).to_not have_menuitem("Move to folder...")
+          toggle_disclosure "Actions", expand: false
         end
 
         within find_embed(name: "Posts (emails) sent to customers of this product will appear here").hover do
-          select_disclosure "Actions" do
-            expect(page.document).to_not have_menuitem("Move to folder...")
-          end
+          toggle_disclosure "Actions"
+          expect(page.document).to_not have_menuitem("Move to folder...")
+          toggle_disclosure "Actions", expand: false
         end
       end
     end
