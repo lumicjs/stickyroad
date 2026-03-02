@@ -233,7 +233,11 @@ const FileEmbedGroupNodeView = ({
                 ) : null}
               </RowActions>
             ) : null}
-            <RowDetails role="group" data-child-area className={classNames({ hidden: !expanded }, editor.isEditable && "pl-6")}>
+            <RowDetails
+              role="group"
+              data-child-area
+              className={classNames({ hidden: !expanded }, editor.isEditable && "pl-6")}
+            >
               {hasStreamable ? (
                 <NodeViewContent id={uid} />
               ) : (

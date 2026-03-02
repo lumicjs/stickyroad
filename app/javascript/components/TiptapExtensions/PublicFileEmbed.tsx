@@ -37,68 +37,72 @@ const NodeView = ({ editor, node }: NodeViewProps) => {
     <NodeViewWrapper contentEditable={false}>
       <NodeActionsWrapper selected={selected} isEditable={editor.isEditable} asChild>
         <Row className="embed">
-        {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
-        <RowContent className="content">
-          <FileRowContent
-            extension={file.extension}
-            name={file.name.trim() || "Untitled"}
-            externalLinkUrl={null}
-            isUploading={isUploading}
-            hideIcon={false}
-            details={
-              <>
-                {file.extension ? <li>{file.extension}</li> : null}
+          {editor.isEditable ? <NodeActionsMenu editor={editor} /> : null}
+          <RowContent className="content">
+            <FileRowContent
+              extension={file.extension}
+              name={file.name.trim() || "Untitled"}
+              externalLinkUrl={null}
+              isUploading={isUploading}
+              hideIcon={false}
+              details={
+                <>
+                  {file.extension ? <li>{file.extension}</li> : null}
 
-                <li>
-                  {isUploading
-                    ? `${((uploadProgress?.percent ?? 0) * 100).toFixed(0)}% of ${FileUtils.getFullFileSizeString(
-                        file.file_size ?? 0,
-                      )}`
-                    : FileUtils.getFullFileSizeString(file.file_size ?? 0)}
-                </li>
-              </>
-            }
-          />
-        </RowContent>
-        <RowActions>
-          {isUploading ? (
-            <Button color="danger" onClick={() => cancelUpload?.(id)}>
-              Cancel
-            </Button>
+                  <li>
+                    {isUploading
+                      ? `${((uploadProgress?.percent ?? 0) * 100).toFixed(0)}% of ${FileUtils.getFullFileSizeString(
+                          file.file_size ?? 0,
+                        )}`
+                      : FileUtils.getFullFileSizeString(file.file_size ?? 0)}
+                  </li>
+                </>
+              }
+            />
+          </RowContent>
+          <RowActions>
+            {isUploading ? (
+              <Button color="danger" onClick={() => cancelUpload?.(id)}>
+                Cancel
+              </Button>
+            ) : null}
+            {editor.isEditable && !isUploading ? (
+              <Button
+                size="icon"
+                onClick={() => setExpanded(!expanded)}
+                aria-label={expanded ? "Close drawer" : "Edit"}
+              >
+                {expanded ? <ChevronUp className="size-5" /> : <ChevronDown className="size-5" />}
+              </Button>
+            ) : null}
+            {FileUtils.isAudioExtension(file.extension) ? (
+              <Button color="primary" onClick={() => setShowAudioPlayer(!showAudioPlayer)}>
+                {showAudioPlayer ? "Close" : "Play"}
+              </Button>
+            ) : null}
+          </RowActions>
+          {FileUtils.isAudioExtension(file.extension) && showAudioPlayer && file.url ? (
+            <RowDetails>
+              <AudioPlayer src={file.url} />
+            </RowDetails>
           ) : null}
-          {editor.isEditable && !isUploading ? (
-            <Button size="icon" onClick={() => setExpanded(!expanded)} aria-label={expanded ? "Close drawer" : "Edit"}>
-              {expanded ? <ChevronUp className="size-5" /> : <ChevronDown className="size-5" />}
-            </Button>
+          {expanded ? (
+            <RowDetails className="drawer flex flex-col gap-4">
+              <Fieldset>
+                <FieldsetTitle>
+                  <Label htmlFor={`${uid}-name`}>Name</Label>
+                </FieldsetTitle>
+                <Input
+                  type="text"
+                  id={`${uid}-name`}
+                  value={file.name}
+                  onChange={(e) => updateFile?.(id, { name: e.target.value })}
+                  placeholder="Enter file name"
+                />
+              </Fieldset>
+            </RowDetails>
           ) : null}
-          {FileUtils.isAudioExtension(file.extension) ? (
-            <Button color="primary" onClick={() => setShowAudioPlayer(!showAudioPlayer)}>
-              {showAudioPlayer ? "Close" : "Play"}
-            </Button>
-          ) : null}
-        </RowActions>
-        {FileUtils.isAudioExtension(file.extension) && showAudioPlayer && file.url ? (
-          <RowDetails>
-            <AudioPlayer src={file.url} />
-          </RowDetails>
-        ) : null}
-        {expanded ? (
-          <RowDetails className="drawer flex flex-col gap-4">
-            <Fieldset>
-              <FieldsetTitle>
-                <Label htmlFor={`${uid}-name`}>Name</Label>
-              </FieldsetTitle>
-              <Input
-                type="text"
-                id={`${uid}-name`}
-                value={file.name}
-                onChange={(e) => updateFile?.(id, { name: e.target.value })}
-                placeholder="Enter file name"
-              />
-            </Fieldset>
-          </RowDetails>
-        ) : null}
-      </Row>
+        </Row>
       </NodeActionsWrapper>
     </NodeViewWrapper>
   );
