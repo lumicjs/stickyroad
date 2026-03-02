@@ -692,11 +692,13 @@ describe("Product Edit Rich Text Editor", type: :system, js: true) do
         expect(page).to have_selector("article")
 
         find("[aria-label='Actions']").click
-        within("[role='menu']") do
-          click_on "Settings"
-        end
-        expect(page).to have_checked_field("Only my products")
       end
+
+      within("[role='menu']") do
+        click_on "Settings"
+      end
+
+      expect(page).to have_checked_field("Only my products")
     end
 
     it "allows updating the More like this block with directly affiliated products" do
@@ -1080,25 +1082,25 @@ describe("Product Edit Rich Text Editor", type: :system, js: true) do
 
         within find_embed(name: "First file").hover do
           select_disclosure "Actions" do
-            expect(page).to have_menuitem("Move to folder...")
+            expect(page.document).to have_menuitem("Move to folder...")
           end
         end
 
         within find_file_group("Folder 1").hover do
           select_disclosure "Actions" do
-            expect(page).to_not have_menuitem("Move to folder...")
+            expect(page.document).to_not have_menuitem("Move to folder...")
           end
         end
 
         within find_embed(name: "6F0E4C97-B72A4E69-A11BF6C4-AF6517E7").hover do
           select_disclosure "Actions" do
-            expect(page).to_not have_menuitem("Move to folder...")
+            expect(page.document).to_not have_menuitem("Move to folder...")
           end
         end
 
         within find_embed(name: "Posts (emails) sent to customers of this product will appear here").hover do
           select_disclosure "Actions" do
-            expect(page).to_not have_menuitem("Move to folder...")
+            expect(page.document).to_not have_menuitem("Move to folder...")
           end
         end
       end
