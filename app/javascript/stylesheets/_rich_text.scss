@@ -133,11 +133,6 @@
     }
   }
 
-
-  .react-renderer[draggable] {
-    cursor: unset;
-  }
-
   .embed {
     border: $border;
     border-radius: border-radius(1);
@@ -201,42 +196,4 @@
       }
     }
   }
-}
-
-.ProseMirror[contenteditable="true"] {
-  white-space: break-spaces;
-
-  &:focus-within {
-    outline: none;
-  }
-
-  figure {
-    & > img {
-      cursor: pointer;
-    }
-
-    // Chrome-specific workaround to prevent highlighting the br
-    br::selection {
-      background: none;
-    }
-
-    img::selection {
-      background: gray(3);
-    }
-
-    &[data-has-focus] img {
-      outline: $outline;
-    }
-  }
-}
-
-
-// Placeholder plugin
-.ProseMirror p.is-editor-empty:first-child::before,
-.ProseMirror .node-image.is-empty .figcaption::before {
-  content: attr(data-placeholder);
-  pointer-events: none;
-  float: left;
-  height: 0;
-  @include text-muted;
 }
