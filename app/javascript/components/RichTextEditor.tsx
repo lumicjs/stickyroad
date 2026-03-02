@@ -27,11 +27,11 @@ import { EditorState, Selection } from "@tiptap/pm/state";
 import { EditorView } from "@tiptap/pm/view";
 import { EditorContent, Extensions, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import cx from "classnames";
 import { partition } from "lodash-es";
 import * as React from "react";
 
 import { assertDefined } from "$app/utils/assert";
+import { classNames } from "$app/utils/classNames";
 
 import { InputtedDiscount } from "$app/components/CheckoutDashboard/DiscountInput";
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "$app/components/Popover";
@@ -281,7 +281,7 @@ export const useRichTextEditor = ({
     editable,
     editorProps: {
       attributes: {
-        ...(className ? { class: className } : {}),
+        ...(className ? { class: classNames("min-h-full rounded-t-none", className) } : {}),
         ...(ariaLabel ? { "aria-label": ariaLabel } : {}),
         ...(id ? { id } : {}),
       },
@@ -417,7 +417,7 @@ export const RichTextEditorToolbar = ({
     <ToolbarTooltipContext.Provider value={showTooltipState}>
       <div
         role="toolbar"
-        className={cx(
+        className={classNames(
           "sticky top-0 z-[1] flex flex-wrap gap-1 px-2 py-1 text-foreground",
           color === "ghost" ? "bg-background" : "bg-primary text-primary-foreground",
           className,
@@ -634,7 +634,7 @@ export const RichTextEditor = ({
   });
 
   return (
-    <div className="rich-text-editor" data-gumroad-ignore>
+    <div className="grid min-h-56 grid-rows-[max-content_1fr] rounded" data-gumroad-ignore>
       {editor ? (
         <RichTextEditorToolbar editor={editor} className="rounded-t rounded-b-none border border-b-0 border-border" />
       ) : null}

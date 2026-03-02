@@ -348,7 +348,7 @@ export const DescriptionEditor = ({
       <Label htmlFor={uid}>Description</Label>
       <PublicFilesSettingsContext.Provider value={publicFilesSettings}>
         <ImageUploadSettingsContext.Provider value={imageSettings}>
-          <div className="rich-text-editor" data-gumroad-ignore>
+          <div className="grid min-h-56 grid-rows-[max-content_1fr] rounded" data-gumroad-ignore>
             {editor ? (
               <RichTextEditorToolbar
                 editor={editor}
