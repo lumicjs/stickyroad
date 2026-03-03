@@ -77,7 +77,11 @@ export const RichContentView = ({
 const SALE_INFO_PLACEHOLDER_QUERY_PARAM = "__sale_info__";
 
 const isGumroadPostUrl = (url: URL) => {
-  const isGumroadDomain = url.hostname.endsWith(".gumroad.com") || url.hostname === "gumroad.com";
+  const isGumroadDomain =
+    url.hostname.endsWith(".gumroad.com") ||
+    url.hostname === "gumroad.com" ||
+    url.hostname.endsWith(".gumroad.dev") ||
+    url.hostname === "gumroad.dev";
   const isPostPath = /^\/([^/]+\/)?p\/[^/]+$/u.test(url.pathname);
   return isGumroadDomain && isPostPath;
 };
