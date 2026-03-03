@@ -91,9 +91,9 @@ export default function FollowersPage() {
       selectedTab="subscribers"
       actions={
         <>
-          {isSearchVisible.current && (
+          {isSearchVisible.current ? (
             <Search onSearch={setSearchQuery} value={searchQuery} placeholder="Search followers" />
-          )}
+          ) : null}
           <Popover>
             <PopoverAnchor>
               <WithTooltip tip="Export" position="bottom">
