@@ -119,7 +119,7 @@ Tell the user the file was created and suggest they review it before posting.
 ## Important
 
 - Use `gh` read-only only. Never create, comment on, or update PRs.
-- Always fetch the GitHub issue — it provides critical context for the Problem section.
+- Always fetch the GitHub issue — it provides critical context for the What section.
 - Omit the Before/After section entirely for non-UI changes (remove the HTML comment too).
 - Omit the Test Results section if not applicable (remove the HTML comment too).
 - The AI disclaimer is always the last line, after a `---` separator.

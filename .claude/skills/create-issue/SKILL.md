@@ -22,7 +22,7 @@ Gather context from the user. Ask clarifying questions if needed:
 - Any workarounds in use?
 - Is there data that quantifies the impact?
 
-If the user points to code, trace the relevant paths to understand the root cause. Include aggregated, anonymized data that quantifies the impact when available (e.g., "99 purchases across 82 sellers are in this state"). Never include PII — no emails, names, IDs, or payment details.
+If the user points to code, trace the relevant paths to understand the root cause.
 
 ### 2. Decide: Single Issue or Parent + Sub-issues
 
@@ -49,11 +49,7 @@ Follow the structure in CONTRIBUTING.md.
 
 **Title** — Carries most of the weight. Specific and actionable.
 
-**## What**
-What needs to change. Be concrete — current vs desired behavior, who is affected, checkbox task list for multiple deliverables.
-
-**## Why**
-Why this matters — business rationale or user impact, root cause if it's a bug, links to related issues or prior discussions.
+Use `## What` and `## Why` sections as defined in CONTRIBUTING.md. Quantify impact with aggregated data when available.
 
 ### 4. Output
 
@@ -69,6 +65,7 @@ Follow CONTRIBUTING.md for terminology and tone. Additionally:
 - Ground claims in data or code references.
 - Reference code by area or concept ("the dispute webhook handler"), not by file:line.
 - The issue is public (open source). Self-contained for OSS contributors with no access to internal tools.
+- Include aggregated data when it quantifies the problem (e.g., "99 purchases across 82 sellers"). Never include PII — no emails, user IDs, names, or payment details.
 
 ## Important
 
