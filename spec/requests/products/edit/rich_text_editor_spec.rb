@@ -708,12 +708,12 @@ describe("Product Edit Rich Text Editor", type: :system, js: true) do
 
       within ".node-moreLikeThis" do
         find("[aria-label='Actions']").click
-        within("[role='menu']") do
-          click_on "Settings"
-        end
-        find("label", text: "My products and affiliated").click
-        expect(page).not_to have_selector("[role='menu']")
       end
+      within("[role='menu']") do
+        click_on "Settings"
+      end
+      find("label", text: "My products and affiliated").click
+      expect(page).not_to have_selector("[role='menu']")
     end
 
     it "shows a placeholder when no product recommendations are received" do
