@@ -76,19 +76,32 @@ export const RichContentView = ({
 
 const SALE_INFO_PLACEHOLDER_QUERY_PARAM = "__sale_info__";
 
+const isGumroadPostUrl = (url: URL) => {
+  const isGumroadDomain = url.hostname.endsWith(".gumroad.com") || url.hostname === "gumroad.com";
+  const isPostPath = /^\/([^/]+\/)?p\/[^/]+$/u.test(url.pathname);
+  return isGumroadDomain && isPostPath;
+};
+
 const addSaleInfoQueryParams = (href: string, saleInfo: SaleInfo | null) => {
   if (!saleInfo) return href;
 
   try {
     const url = new URL(href);
-    if (!url.searchParams.has(SALE_INFO_PLACEHOLDER_QUERY_PARAM)) return href;
 
-    url.searchParams.delete(SALE_INFO_PLACEHOLDER_QUERY_PARAM);
-    url.searchParams.set("sale_id", saleInfo.sale_id);
-    url.searchParams.set("product_id", saleInfo.product_id || "");
-    url.searchParams.set("product_permalink", saleInfo.product_permalink || "");
+    if (url.searchParams.has(SALE_INFO_PLACEHOLDER_QUERY_PARAM)) {
+      url.searchParams.delete(SALE_INFO_PLACEHOLDER_QUERY_PARAM);
+      url.searchParams.set("sale_id", saleInfo.sale_id);
+      url.searchParams.set("product_id", saleInfo.product_id || "");
+      url.searchParams.set("product_permalink", saleInfo.product_permalink || "");
+      return url.href;
+    }
 
-    return url.href;
+    if (isGumroadPostUrl(url) && !url.searchParams.has("purchase_id")) {
+      url.searchParams.set("purchase_id", saleInfo.sale_id);
+      return url.href;
+    }
+
+    return href;
   } catch {
     return href;
   }
